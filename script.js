@@ -218,29 +218,23 @@ function stand() {
       const playerScore = calculateHandValue(playerHand);
       const dealerScore = calculateHandValue(dealerHand);
       document.getElementById("deal-button").disabled = false;
+      const messageHTML = document.getElementById("message");
+      const betDisplayHTML = document.getElementById("bet-display");
 
       if (dealerScore != 21 && playerScore == 21 && playerHand.length == 2) {
-        document.getElementById("message").innerHTML = "Blackjack!!!";
-        document.getElementById(
-          "bet-display"
-        ).textContent = `${playerName} win ${betAmount * 2.5}$`;
+        messageHTML.innerHTML = "Blackjack!!!";
+        betDisplayHTML.textContent = `${playerName} win ${betAmount * 2.5}$`;
         playerMoney += betAmount * 2.5;
       } else if (dealerScore > 21 || dealerScore < playerScore) {
-        document.getElementById("message").innerHTML = "You win!";
-        document.getElementById(
-          "bet-display"
-        ).textContent = `${playerName} win ${betAmount * 2}$`;
+        messageHTML.innerHTML = "You win!";
+        betDisplayHTML.textContent = `${playerName} win ${betAmount * 2}$`;
         playerMoney += betAmount * 2;
       } else if (dealerScore > playerScore) {
-        document.getElementById("message").innerHTML = "Dealer win!";
-        document.getElementById(
-          "bet-display"
-        ).textContent = `${playerName} lose ${+betAmount}$`;
+        messageHTML.innerHTML = "Dealer win!";
+        betDisplayHTML.textContent = `${playerName} lose ${+betAmount}$`;
       } else {
-        document.getElementById("message").innerHTML = "It's a tie!";
-        document.getElementById(
-          "bet-display"
-        ).textContent = `${playerName} gain back ${+betAmount}$`;
+        messageHTML.innerHTML = "It's a tie!";
+        betDisplayHTML.textContent = `${playerName} gain back ${+betAmount}$`;
         playerMoney += +betAmount;
       }
 
