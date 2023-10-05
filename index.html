@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Blackjack Game" />
+    <title>Blackjack Game</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Menu -->
+    <div id="menu">
+      <h1>Blackjack Game</h1>
+      <input
+        type="text"
+        id="player-name"
+        placeholder="Enter your name"
+        maxlength="13"
+      />
+      <button id="play-button">Play</button>
+      <button id="rules">Rules</button>
+
+      <p id="leading-player" class="white-text"></p>
+    </div>
+
+    <div id="rulesModal" class="modal">
+      <div class="rules-content">
+        <div class="modal-header">
+          <span id="close">&times;</span>
+          <h2>Rules:</h2>
+        </div>
+        <div class="modal-body">
+          <ul>
+            <h3>Goal of the Game:</h3>
+            <li>
+              The primary objective in Blackjack is to beat the dealer without
+              exceeding 21.
+            </li>
+          </ul>
+          <ul>
+            <h3>Card Values:</h3>
+            <li>
+              This game is played with a standard deck of playing cards (52
+              cards in total).
+            </li>
+            <li>Number cards (2 through 10) are worth their face value.</li>
+            <li>Face cards (King, Queen, Jack) are each worth 10 points.</li>
+            <li>
+              Aces can be worth either 1 or 11 points, depending on which value
+              benefits the player more.
+            </li>
+          </ul>
+          <ul>
+            <h3>Player Actions:</h3>
+            <li>
+              Hit: The player can request additional cards to try and improve
+              their hand. They can continue to hit as many times as they wish,
+              but if the total exceeds 21, they lose the game.
+            </li>
+            <li>
+              Stand: If the player is satisfied with their current hand, they
+              can choose to "stand," which means they don't take any more cards.
+            </li>
+            <li>
+              Deal: After the game is over, the player can start a new game.
+            </li>
+          </ul>
+          <ul>
+            <h3>Dealer Actions:</h3>
+            <li>The dealer must hit until their hand totals 17 or higher.</li>
+          </ul>
+          <ul>
+            <h3>Winning and Payouts:</h3>
+            <li>
+              Blackjack (an Ace and a 10-value card) usually pays out at higher
+              odds (player's bet returned with an extra of 1.5 times their bet).
+            </li>
+            <li>
+              If the player's hand is closer to 21 than the dealer's without
+              going over, the player wins (player's bet returned with an extra
+              of 1 times their bet).
+            </li>
+            <li>
+              If both the player and dealer have the same total, it's a tie, and
+              the player's bet is returned.
+            </li>
+            <li>
+              If the dealer's hand is closer to 21 than the player's without
+              going over, the player loses (player's bet is lost).
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div id="table">
+      <!-- Dealer Zone -->
+      <div id="dealer-zone">
+        <div id="dealer-cards" class="cards"></div>
+        <div id="dealer-hand" class="white-text"></div>
+      </div>
+
+      <!-- Text Zone -->
+      <input type="number" id="bet-amount" placeholder="Enter your bet" />
+      <div id="message" class="white-text"></div>
+      <div id="bet-display" class="white-text"></div>
+      <button id="restart-button">Restart</button>
+
+      <!-- Buttons -->
+      <div id="buttons-zone">
+        <button id="hit-button">Hit</button>
+        <button id="stand-button">Stand</button>
+        <button id="bet-button">Bet</button>
+        <button id="deal-button">Deal</button>
+      </div>
+
+      <!-- Player Zone -->
+      <div id="players-zone">
+        <div id="player-money" class="white-text"></div>
+        <div id="player-hand" class="white-text"></div>
+        <div id="player-cards" class="cards"></div>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
