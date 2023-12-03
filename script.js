@@ -71,6 +71,25 @@ let localTop = { player: "", score: 100 };
 let betAmount;
 let playerName;
 
+const leadingPlayerHTML = document.getElementById("leading-player");
+const tableHTML = document.getElementById("table");
+const menuHTML = document.getElementById("menu");
+const messageHTML = document.getElementById("message");
+const betAmountInput = document.getElementById("bet-amount");
+const betDisplayHTML = document.getElementById("bet-display");
+const betBtn = document.getElementById("bet-button");
+const dealBtn = document.getElementById("deal-button");
+const restartBtn = document.getElementById("restart-button");
+const hitBtn = document.getElementById("hit-button");
+const standBtn = document.getElementById("stand-button");
+const playBtn = document.getElementById("play-button");
+
+const playerCardsElement = document.getElementById("player-cards");
+const dealerCardsElement = document.getElementById("dealer-cards");
+const playerHandElement = document.getElementById("player-hand");
+const dealerHandElement = document.getElementById("dealer-hand");
+const playerMoneyElement = document.getElementById("player-money");
+
 //When starting a game, it will set the player name by it input, and if there wasn't, will set it to 'Player' by default
 function setPlayerName() {
   playerName = document.getElementById("player-name").value;
@@ -85,30 +104,28 @@ updateLocalTop();
 function updateLocalTop() {
   if (localStorage.getItem("localTop")) {
     localTop = JSON.parse(localStorage.getItem("localTop"));
-    document.getElementById(
-      "leading-player"
-    ).innerText = `Best score achieved was ${localTop.score}$ by ${localTop.player}`;
+    leadingPlayerHTML.innerText = `Best score achieved was ${localTop.score}$ by ${localTop.player}`;
   }
 }
 
 //Will move the leader description area from menu to table
 function moveLeader() {
-  const leaderDescription = document.getElementById("leading-player");
-  document.getElementById("table").appendChild(leaderDescription);
+  const leaderDescription = leadingPlayerHTML;
+  tableHTML.appendChild(leaderDescription);
 }
 
 //Check if player's bet is valid (only numbers, not decimals)
 function isValidBet() {
-  betAmount = document.getElementById("bet-amount").value;
+  betAmount = betAmountInput.value;
   if (
     isNaN(betAmount) ||
     betAmount <= 0 ||
     betAmount > playerMoney ||
     betAmount % 1 != 0
   ) {
-    document.getElementById("bet-button").disabled = true;
+    betBtn.disabled = true;
   } else {
-    document.getElementById("bet-button").disabled = false;
+    betBtn.disabled = false;
   }
 }
 
@@ -116,65 +133,62 @@ function isValidBet() {
 function restartGame() {
   playerMoney = 100;
   sessionTopScore = playerMoney;
-  document.getElementById("restart-button").style.display = "none";
+  restartBtn.style.display = "none";
   startGame();
 }
 
 //Start a game, will reset the table before
 function startGame() {
-  document.getElementById("menu").style.display = "none";
-  document.getElementById("table").style.display = "block";
-  document.getElementById("bet-display").style.display = "none";
-  document.getElementById("deal-button").style.display = "none";
-  document.getElementById("hit-button").style.display = "none";
-  document.getElementById("stand-button").style.display = "none";
+  menuHTML.style.display = "none";
+  tableHTML.style.display = "block";
+  betDisplayHTML.style.display = "none";
+  dealBtn.style.display = "none";
+  hitBtn.style.display = "none";
+  standBtn.style.display = "none";
 
-  document.getElementById("message").innerHTML = "<br>";
-  document.getElementById("deal-button").disabled = true;
-  document.getElementById("bet-button").disabled = true;
-  document.getElementById("bet-amount").value = "";
+  messageHTML.innerHTML = "<br>";
+  dealBtn.disabled = true;
+  betBtn.disabled = true;
+  betAmountInput.value = "";
   dealtCards = [];
   deck = deck.concat(playerHand, dealerHand);
   playerHand = [];
   dealerHand = [];
   updateUI();
-  document.getElementById("player-hand").innerHTML = "";
-  document.getElementById("dealer-hand").innerHTML = "";
+  playerHandElement.innerHTML = "";
+  dealerHandElement.innerHTML = "";
+  betAmountInput.max = playerMoney;
   if (playerMoney > 1) {
-    document.getElementById("bet-amount").style.display = "inline";
-    document.getElementById("bet-button").style.display = "inline";
+    betAmountInput.style.display = "inline";
+    betBtn.style.display = "inline";
     shuffleDeck();
-    document.getElementById(
-      "player-money"
-    ).innerHTML = `${playerName}'s money: ${playerMoney}$`;
+    playerMoneyElement.innerHTML = `${playerName}'s money: ${playerMoney}$`;
   } else {
     //Game over
-    document.getElementById("message").innerHTML = `
+    messageHTML.innerHTML = `
     <p>Can't bet anymore! Game over!</p>
     <p>Your best score this game was: ${sessionTopScore}$</p>
   `;
-    document.getElementById("restart-button").style.display = "inline";
-    document.getElementById("player-money").innerHTML = ``;
+    restartBtn.style.display = "inline";
+    playerMoneyElement.innerHTML = ``;
   }
 }
 
 //Dealing Cards, open options for player
 function dealTable() {
-  document.getElementById("deal-button").style.display = "inline";
-  document.getElementById("hit-button").style.display = "inline";
-  document.getElementById("stand-button").style.display = "inline";
-  document.getElementById("bet-button").style.display = "none";
+  dealBtn.style.display = "inline";
+  hitBtn.style.display = "inline";
+  standBtn.style.display = "inline";
+  betBtn.style.display = "none";
   playerMoney -= betAmount;
   playerHand = [dealCard(), dealCard()];
   dealerHand = [dealCard()];
-  document.getElementById("hit-button").disabled = false;
-  document.getElementById("stand-button").disabled = false;
-  document.getElementById("bet-button").disabled = true;
-  document.getElementById("bet-amount").style.display = "none";
-  document.getElementById("bet-display").style.display = "inline";
-  document.getElementById(
-    "bet-display"
-  ).textContent = `Your bet: ${+document.getElementById("bet-amount").value}$`;
+  hitBtn.disabled = false;
+  standBtn.disabled = false;
+  betBtn.disabled = true;
+  betAmountInput.style.display = "none";
+  betDisplayHTML.style.display = "inline";
+  betDisplayHTML.textContent = `Your bet: ${Number(betAmountInput.value)}$`;
   updateUI();
   if (calculateHandValue(playerHand) === 21) {
     stand();
@@ -183,8 +197,8 @@ function dealTable() {
 
 //Player can only choose 'Deal' to end the match
 function disableGameButtons() {
-  document.getElementById("hit-button").disabled = true;
-  document.getElementById("stand-button").disabled = true;
+  hitBtn.disabled = true;
+  standBtn.disabled = true;
 }
 
 //Player pulling a card
@@ -193,12 +207,10 @@ function hit() {
   updateUI();
 
   if (calculateHandValue(playerHand) > 21) {
-    document.getElementById("message").innerHTML = "Dealer win!";
-    document.getElementById(
-      "bet-display"
-    ).textContent = `${playerName} lose ${+betAmount}$`;
+    messageHTML.innerHTML = "Dealer win!";
+    betDisplayHTML.textContent = `${playerName} lose ${+betAmount}$`;
     disableGameButtons();
-    document.getElementById("deal-button").disabled = false;
+    dealBtn.disabled = false;
   } else if (calculateHandValue(playerHand) === 21) {
     stand();
   }
@@ -217,9 +229,7 @@ function stand() {
     } else {
       const playerScore = calculateHandValue(playerHand);
       const dealerScore = calculateHandValue(dealerHand);
-      document.getElementById("deal-button").disabled = false;
-      const messageHTML = document.getElementById("message");
-      const betDisplayHTML = document.getElementById("bet-display");
+      dealBtn.disabled = false;
 
       if (dealerScore != 21 && playerScore == 21 && playerHand.length == 2) {
         messageHTML.innerHTML = "Blackjack!!!";
@@ -313,12 +323,6 @@ function getColorBySuit(suit) {
 
 //Update Table UI
 function updateUI() {
-  const playerCardsElement = document.getElementById("player-cards");
-  const dealerCardsElement = document.getElementById("dealer-cards");
-  const playerHandElement = document.getElementById("player-hand");
-  const dealerHandElement = document.getElementById("dealer-hand");
-  const playerMoneyElement = document.getElementById("player-money");
-
   playerCardsElement.innerHTML = "";
   dealerCardsElement.innerHTML = "";
 
@@ -339,19 +343,17 @@ function updateUI() {
 }
 
 //Events Listeners
-document.getElementById("play-button").addEventListener("click", () => {
+playBtn.addEventListener("click", () => {
   setPlayerName();
   moveLeader();
   startGame();
 });
-document.getElementById("hit-button").addEventListener("click", hit);
-document.getElementById("stand-button").addEventListener("click", stand);
-document.getElementById("bet-button").addEventListener("click", dealTable);
-document.getElementById("deal-button").addEventListener("click", startGame);
-document.getElementById("bet-amount").addEventListener("input", isValidBet);
-document
-  .getElementById("restart-button")
-  .addEventListener("click", restartGame);
+hitBtn.addEventListener("click", hit);
+standBtn.addEventListener("click", stand);
+betBtn.addEventListener("click", dealTable);
+dealBtn.addEventListener("click", startGame);
+betAmountInput.addEventListener("input", isValidBet);
+restartBtn.addEventListener("click", restartGame);
 
 //Modal of the rules
 let modal = document.getElementById("rulesModal");

@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Blackjack Game" />
+    <link rel="icon" href="./blackjack-icon.png" type="image/icon type" />
     <title>Blackjack Game</title>
     <link rel="stylesheet" href="style.css" />
   </head>
@@ -102,7 +103,12 @@
       </div>
 
       <!-- Text Zone -->
-      <input type="number" id="bet-amount" placeholder="Enter your bet" />
+      <input
+        type="number"
+        id="bet-amount"
+        placeholder="Enter your bet"
+        min="1"
+      />
       <div id="message" class="white-text"></div>
       <div id="bet-display" class="white-text"></div>
       <button id="restart-button">Restart</button>
